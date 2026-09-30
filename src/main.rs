@@ -1,4 +1,6 @@
 use self_update::cargo_crate_version;
+#[cfg(not(feature = "signatures"))]
+use self_update::http::status;
 
 const REPO_OWNER: &str = "Nisenogen";
 const REPO_NAME: &str = "self_update_test";
@@ -60,7 +62,16 @@ fn check() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn update() -> Result<(), Box<dyn std::error::Error>> {
-    let status = self_update::backends::github::Update::configure()
+    let mut status_builder = self_update::backends::github::Update::configure();
+
+    #[cfg(feature = "signatures")]
+    status_builder
+        .repo_owner(REPO_OWNER)
+        .verifying_keys([*include_bytes!("github-public.key")]);
+    #[cfg(not(feature = "signatures"))]
+    status_builder.repo_owner(REPO_OWNER);
+
+    let status = status_builder
         .repo_owner(REPO_OWNER)
         .repo_name(REPO_NAME)
         .bin_name(BIN_NAME)
