@@ -1451,7 +1451,7 @@ dependencies = [
 
 [[package]]
 name = "self_update_test"
-version = "1.0.3"
+version = "1.0.4"
 dependencies = [
  "self_update",
 ]

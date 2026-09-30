@@ -77,6 +77,7 @@ fn update() -> Result<(), Box<dyn std::error::Error>> {
         .bin_name(BIN_NAME)
         .current_version(cargo_crate_version!())
         .show_download_progress(true)
+        /*
         .verify_archive(|archive: &std::path::Path| {
             let ok = std::process::Command::new("gh")
                 .args(["attestation", "verify"])
@@ -94,6 +95,7 @@ fn update() -> Result<(), Box<dyn std::error::Error>> {
                 ))
             }
         })
+        */
         .build()?
         .update()?;
 
